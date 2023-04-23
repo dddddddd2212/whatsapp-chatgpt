@@ -29,6 +29,12 @@ logger = logging.getLogger(__name__)
 
 
 def generate_response(prompt: str) -> str:
+    """
+    Generate a response using ChatGPT API.
+
+    :param prompt: The input message to generate a response for.
+    :return: The generated response as a string.
+    """
     openai.api_key = OPENAI_API_KEY
 
     try:
@@ -36,7 +42,7 @@ def generate_response(prompt: str) -> str:
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.5,
-            max_tokens=100,
+            max_tokens=1600,
         )
         generated_message = completion.choices[0].message["content"]
         print(generated_message)
@@ -48,6 +54,11 @@ def generate_response(prompt: str) -> str:
 
 
 async def process_whatsapp_message(incoming_msg: str) -> None:
+    """
+    Process the incoming WhatsApp message asynchronously.
+
+    :param incoming_msg: The incoming message to process.
+    """
     loop = asyncio.get_event_loop()
 
     with ThreadPoolExecutor() as pool:
@@ -68,6 +79,11 @@ async def process_whatsapp_message(incoming_msg: str) -> None:
 
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp_message():
+    """
+    Handle incoming WhatsApp messages and process them asynchronously.
+
+    :return: A response indicating that message processing has been initiated.
+    """
     incoming_msg = request.values.get("Body", "").strip()
 
     loop = new_event_loop()
