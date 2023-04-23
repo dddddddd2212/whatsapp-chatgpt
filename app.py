@@ -45,7 +45,6 @@ def generate_response(prompt: str) -> str:
             max_tokens=1600,
         )
         generated_message = completion.choices[0].message["content"]
-        print(generated_message)
         return generated_message.strip()
 
     except Exception as e:
